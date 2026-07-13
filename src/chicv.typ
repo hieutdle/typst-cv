@@ -8,9 +8,9 @@
 )
 
 #let to-string(input) = {
-  if type(input) == "string" {
+  if type(input) == str {
     input
-  } else if type(input) == "content" {
+  } else if type(input) == content {
     if input.has("text") {
       input.text
     } else if input.has("children") {
@@ -51,9 +51,18 @@
   let uri = to-string(uri);
   let icon = to-string(icon);
   if text != "" {
-    [#box(fa-icon(icon, solid: solid), inset: (right: 2pt))#link(uri)[#text]]
+    let rendered = [#box(fa-icon(icon, solid: solid), inset: (right: 2pt))#text]
+    if uri != "" {
+      link(uri)[#rendered]
+    } else {
+      rendered
+    }
   } else {
-    link(uri)[#fa-icon(icon, solid: solid)]
+    if uri != "" {
+      link(uri)[#fa-icon(icon, solid: solid)]
+    } else {
+      fa-icon(icon, solid: solid)
+    }
   }
 }
 
@@ -84,6 +93,7 @@
   github: "",
   website: "",
   linkedin: "",
+  birthday: "",
   ..misc
 ) = {
   let email = if email != "" {
@@ -107,8 +117,11 @@
              text: short-uri(linkedin, get-path: true),
              icon: "linkedin")
   } else { "" };
+  let birthday = if birthday != "" {
+    iconlink("", text: birthday, icon: "cake-candles", solid: true)
+  } else { "" };
 
-  let display = (email, phone, github, website, linkedin)
+  let display = (email, phone, github, website, linkedin, birthday)
         .filter(it => it != "")
         .join(" | ");
 
@@ -178,10 +191,7 @@
     level: 1
   ): set text(
     size: 22pt,
-    font: (
-      "Avenir Next LT Pro", // original chi-cv font
-      "Manrope", // a font available in the typst environment and looks similar to Avenir
-    ),
+    font: "Avenir Next LT Pro",
     weight: "light",
   )
 
@@ -189,10 +199,7 @@
     level: 2
   ): it => text(
     size: 14pt,
-    font: (
-      "Avenir Next LT Pro",
-      "Manrope",
-    ),
+    font: "Avenir Next LT Pro",
     weight: "light",
     block(
       chiline() + it,

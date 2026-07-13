@@ -36,7 +36,7 @@ Assume that you have installed `typst` cli already and it's in your `$PATH`.
 ```bash
 git clone https://github.com/matchy233/typst-chi-cv-template.git
 cd typst-chi-cv-template
-typst compile --font-path ./fonts ./template/resume.typ resume.pdf
+typst compile --root . --font-path ./fonts ./template/resume.typ resume.pdf
 ```
 
 ## Usage

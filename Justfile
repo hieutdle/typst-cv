@@ -10,6 +10,10 @@ default:
 doc:
 	typst compile docs/manual.typ docs/manual.pdf
 
+# generate resume
+resume:
+	typst compile --root {{root}} --font-path ./fonts ./template/resume.typ resume.pdf
+
 # run test suite
 test *args:
 	typst-test run {{ args }}
